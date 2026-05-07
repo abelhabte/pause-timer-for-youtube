@@ -170,7 +170,7 @@ function injectPanel() {
     </style>
     <div id="panel-controls">
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Pause at Timestamp</label>
+            <label style="font-size: 11px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
                 <input type="text" id="timestampInput" placeholder="h:m:s">
                 <button id="chosenTimestamp">Set</button>
@@ -178,7 +178,7 @@ function injectPanel() {
         </div>
 
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Pause at Percentage</label>
+            <label style="font-size: 11px; opacity: 0.8;">Percentage</label>
             <div class="horizontal-row">
                 <input type="number" id="scaleValue" min="0" max="100" value="100" style="width: 50px; flex: none;">
                 
@@ -189,7 +189,7 @@ function injectPanel() {
         </div>
 
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Pause at Real-World Time</label>
+            <label style="font-size: 11px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
                 <input type="time" id="realTimeInput">
                 <button id="setRealTime">Set</button>
