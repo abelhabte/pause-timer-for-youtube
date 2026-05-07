@@ -139,7 +139,7 @@ function injectPanel() {
         box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif;
         display: flex; flex-direction: column; gap: 15px;
         border: 1px solid var(--panel-border); color: var(--panel-text);
-        width: 260px; /* Increased width to accommodate horizontal layout */
+        width: 200px; /* Increased width to accommodate horizontal layout */
       }
       .input-group {
         display: flex;
@@ -180,10 +180,12 @@ function injectPanel() {
         <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Pause at Percentage</label>
             <div class="horizontal-row">
-                <input type="number" id="scaleValue" min="0" max="100" value="100">
+                <input type="number" id="scaleValue" min="0" max="100" value="100" style="width: 50px; flex: none;">
+                
+                <input type="range" id="scaleSlider" min="0" max="100" value="100" style="flex: 1;">
+                
                 <button id="partitionOfVideoLength">Set</button>
             </div>
-            <input type="range" id="scaleSlider" min="0" max="100" value="100" style="width: 100%; margin-top: 2px;">
         </div>
 
         <div class="input-group">
