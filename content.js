@@ -172,7 +172,7 @@ function injectPanel() {
         <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
-                <input type="text" id="timestampInput" placeholder="h:m:s">
+                <input type="text" id="timestampInput" placeholder="HH:MM:SS">
                 <button id="chosenTimestamp">Set</button>
             </div>
         </div>
