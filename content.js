@@ -137,45 +137,61 @@ function injectPanel() {
       #panel-controls {
         padding: 12px; background: var(--panel-bg); border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif;
-        display: flex; flex-direction: column; gap: 12px;
+        display: flex; flex-direction: column; gap: 15px;
         border: 1px solid var(--panel-border); color: var(--panel-text);
-        width: 180px;
+        width: 260px; /* Increased width to accommodate horizontal layout */
+      }
+      .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .horizontal-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
       }
       #panel-controls input {
-        padding: 5px; border: 1px solid var(--input-border);
+        padding: 6px; border: 1px solid var(--input-border);
         border-radius: 4px; background: var(--input-bg); color: var(--panel-text);
+        flex: 1; /* Makes input take up remaining space */
+        min-width: 0; /* Prevents overflow in flexbox */
       }
       #panel-controls button {
-        padding: 8px 12px; color: var(--button-text); border: none;
+        padding: 6px 10px; color: var(--button-text); border: none;
         border-radius: 4px; cursor: pointer; transition: opacity 0.2s;
         font-weight: bold;
+        white-space: nowrap; /* Keeps button text on one line */
       }
       #chosenTimestamp { background: var(--blue-btn-bg); }
       #partitionOfVideoLength { background: var(--green-btn-bg); }
       #setRealTime { background: var(--orange-btn-bg); }
-      #closePanel { background: var(--red-btn-bg); margin-top: 5px; }
-      .separator { border: 0; border-top: 1px solid var(--panel-border); margin: 2px 0; }
+      #closePanel { background: var(--red-btn-bg); margin-top: 5px; width: 100%; }
     </style>
     <div id="panel-controls">
-        <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Pause at Timestamp</label>
-            <input type="text" id="timestampInput" placeholder="h:m:s or m:s">
-            <button id="chosenTimestamp">Set Timestamp</button>
+            <div class="horizontal-row">
+                <input type="text" id="timestampInput" placeholder="h:m:s">
+                <button id="chosenTimestamp">Set</button>
+            </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Pause at Percentage</label>
-            <input type="range" id="scaleSlider" min="0" max="100" value="100">
-            <input type="number" id="scaleValue" min="0" max="100" value="100">
-            <button id="partitionOfVideoLength">Set Percentage</button>
+            <div class="horizontal-row">
+                <input type="number" id="scaleValue" min="0" max="100" value="100">
+                <button id="partitionOfVideoLength">Set</button>
+            </div>
+            <input type="range" id="scaleSlider" min="0" max="100" value="100" style="width: 100%; margin-top: 2px;">
         </div>
 
-        <hr class="separator">
-
-        <div style="display: flex; flex-direction: column; gap: 5px;">
+        <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Pause at Real-World Time</label>
-            <input type="time" id="realTimeInput">
-            <button id="setRealTime">Set Clock Timer</button>
+            <div class="horizontal-row">
+                <input type="time" id="realTimeInput">
+                <button id="setRealTime">Set</button>
+            </div>
         </div>
 
         <button id="closePanel">Close Panel</button>
