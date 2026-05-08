@@ -5,6 +5,8 @@
 /** @type {number | null} */
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
+const checkMarkUrl = chrome.runtime.getURL("icons/check_mark.svg");
+const closeUrl = chrome.runtime.getURL("icons/close.svg");
 
 // --- HELPER FUNCTIONS FOR TIMESTAMP/PERCENTAGE LOGIC ---
 
@@ -158,22 +160,39 @@ function injectPanel() {
         min-width: 0; /* Prevents overflow in flexbox */
       }
       #panel-controls button {
-        padding: 6px 10px; color: var(--button-text); border: none;
-        border-radius: 4px; cursor: pointer; transition: opacity 0.2s;
-        font-weight: bold;
-        white-space: nowrap; /* Keeps button text on one line */
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 50%; /* Makes them circular */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--button-text);
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        flex-shrink: 0; /* Prevents the button from squishing in tight rows */
       }
       #chosenTimestamp { background: var(--blue-btn-bg); }
       #partitionOfVideoLength { background: var(--green-btn-bg); }
       #setRealTime { background: var(--orange-btn-bg); }
-      #closePanel { background: var(--red-btn-bg); margin-top: 5px; width: 100%; }
+      #closePanel { 
+        background: var(--red-btn-bg);
+        margin-top: 5px;
+        width: 100%;
+        height: auto;       /* Overrides the 32px height of other buttons */
+        padding: 10px;      /* Gives it some vertical breathing room */
+        border-radius: 4px; /* Makes it a rounded rectangle instead of a circle */
+        align-self: stretch;
+        display: block;
+      }
     </style>
     <div id="panel-controls">
         <div class="input-group">
             <label style="font-size: 11px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
                 <input type="text" id="timestampInput" placeholder="HH:MM:SS">
-                <button id="chosenTimestamp">Set</button>
+                <button id="chosenTimestamp"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
             </div>
         </div>
 
@@ -184,7 +203,7 @@ function injectPanel() {
                 
                 <input type="range" id="scaleSlider" min="0" max="100" value="100" style="flex: 1;">
                 
-                <button id="partitionOfVideoLength">Set</button>
+                <button id="partitionOfVideoLength"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
             </div>
         </div>
 
@@ -192,11 +211,11 @@ function injectPanel() {
             <label style="font-size: 11px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
                 <input type="time" id="realTimeInput">
-                <button id="setRealTime">Set</button>
+                <button id="setRealTime"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
             </div>
         </div>
 
-        <button id="closePanel">Close Panel</button>
+        <button id="closePanel"><img src="${closeUrl}" alt="Close" width="16" height="16"></button>
     </div>
   `;
   panel.style.cssText = "position: fixed; top: 10px; right: 10px; z-index: 9999;";
