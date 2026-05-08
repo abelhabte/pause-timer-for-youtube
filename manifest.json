@@ -9,9 +9,11 @@
     "128": "icons/128x128.png"
   },
   "action": {
-    "default_popup": "popup.html",
     "default_title": "Pause Timer for YouTube",
     "default_icon": "icons/128x128.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
   },
   "permissions": ["tabs", "storage"],
   "host_permissions": ["https://www.youtube.com/*"],
@@ -23,7 +25,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icons/check_mark.svg"],
+      "resources": ["icons/check_mark.svg", "icons/close.svg"],
       "matches": ["https://www.youtube.com/*"]
     }
   ],
