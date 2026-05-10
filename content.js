@@ -5,7 +5,7 @@
 /** @type {number | null} */
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
-const checkMarkUrl = chrome.runtime.getURL("icons/check_mark.svg");
+const pauseUrl = chrome.runtime.getURL("icons/pause_dark-grey.svg");
 const closeUrl = chrome.runtime.getURL("icons/close.svg");
 
 // --- HELPER FUNCTIONS FOR TIMESTAMP/PERCENTAGE LOGIC ---
@@ -189,29 +189,29 @@ function injectPanel() {
     </style>
     <div id="panel-controls">
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Timestamp</label>
+            <label style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
                 <input type="text" id="timestampInput" placeholder="HH:MM:SS">
-                <button id="chosenTimestamp"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
+                <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
             </div>
         </div>
 
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Percentage</label>
+            <label style="font-size: 12px; opacity: 0.8;">Percentage</label>
             <div class="horizontal-row">
                 <input type="number" id="scaleValue" min="0" max="100" value="100" style="width: 50px; flex: none;">
                 
                 <input type="range" id="scaleSlider" min="0" max="100" value="100" style="flex: 1;">
                 
-                <button id="partitionOfVideoLength"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
+                <button id="partitionOfVideoLength"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
             </div>
         </div>
 
         <div class="input-group">
-            <label style="font-size: 11px; opacity: 0.8;">Real-Time</label>
+            <label style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
                 <input type="time" id="realTimeInput">
-                <button id="setRealTime"><img src="${checkMarkUrl}" alt="Set" width="16" height="16"></button>
+                <button id="setRealTime"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
             </div>
         </div>
 
