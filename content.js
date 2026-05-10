@@ -6,7 +6,6 @@
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
 const pauseUrl = chrome.runtime.getURL("icons/pause_dark-grey.svg");
-const closeUrl = chrome.runtime.getURL("icons/close.svg");
 
 // --- HELPER FUNCTIONS FOR TIMESTAMP/PERCENTAGE LOGIC ---
 
@@ -176,16 +175,6 @@ function injectPanel() {
       #chosenTimestamp { background: var(--blue-btn-bg); }
       #partitionOfVideoLength { background: var(--green-btn-bg); }
       #setRealTime { background: var(--orange-btn-bg); }
-      #closePanel { 
-        background: var(--red-btn-bg);
-        margin-top: 5px;
-        width: 100%;
-        height: auto;       /* Overrides the 32px height of other buttons */
-        padding: 10px;      /* Gives it some vertical breathing room */
-        border-radius: 4px; /* Makes it a rounded rectangle instead of a circle */
-        align-self: stretch;
-        display: block;
-      }
     </style>
     <div id="panel-controls">
         <div class="input-group">
@@ -214,8 +203,6 @@ function injectPanel() {
                 <button id="setRealTime"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
-
-        <button id="closePanel"><img src="${closeUrl}" alt="Close" width="16" height="16"></button>
     </div>
   `;
   panel.style.cssText = "position: fixed; top: 10px; right: 10px; z-index: 9999;";
@@ -234,7 +221,6 @@ function attachPanelListeners() {
   const scaleSlider = panel.querySelector("#scaleSlider");
   const scaleValueInput = panel.querySelector("#scaleValue");
   const partitionBtn = panel.querySelector("#partitionOfVideoLength");
-  const closeBtn = panel.querySelector("#closePanel");
 
   // Sync slider and number
   scaleSlider?.addEventListener("input", () => scaleValueInput.value = scaleSlider.value);
