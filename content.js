@@ -192,7 +192,7 @@ function injectPanel() {
             <label style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
                 <input type="text" id="timestampInput" placeholder="HH:MM:SS">
-                <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
+                <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
 
@@ -203,7 +203,7 @@ function injectPanel() {
                 
                 <input type="range" id="scaleSlider" min="0" max="100" value="100" style="flex: 1;">
                 
-                <button id="partitionOfVideoLength"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
+                <button id="partitionOfVideoLength"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
 
@@ -211,7 +211,7 @@ function injectPanel() {
             <label style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
                 <input type="time" id="realTimeInput">
-                <button id="setRealTime"><img src="${pauseUrl}" alt="Set" width="32" height="32"></button>
+                <button id="setRealTime"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
 
