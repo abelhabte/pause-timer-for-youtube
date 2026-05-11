@@ -135,6 +135,23 @@ function showSetFeedback(labelElement, originalText) {
 function injectPanel() {
   if (document.getElementById(panelId)) return;
 
+  const video = findVideo();
+  let duration = "H:M:S"; // Fallback
+
+  if (video && video.duration) {
+    const totalSeconds = Math.floor(video.duration);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    // Create the string (e.g., "1:24:05" or "15:30")
+    if (hours > 0) {
+      duration = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    } else {
+      duration = `${minutes}:${String(seconds).padStart(2, '0')}`;
+    }
+  }
+
   const panel = document.createElement("div");
   panel.id = panelId;
   panel.innerHTML = `
@@ -203,7 +220,7 @@ function injectPanel() {
         <div class="input-group">
             <label id="timestampLabel" style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
-                <input type="text" id="timestampInput" value="HH:MM:SS">
+                <input type="text" id="timestampInput" value="${duration}">
                 <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
