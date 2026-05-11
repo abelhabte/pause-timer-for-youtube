@@ -45,9 +45,9 @@ function arrayToTimestamp(timeArray) {
 
   let formattedTime = "";
   if (hours > 0) {
-    formattedTime = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    formattedTime = `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
   } else {
-    formattedTime = `${minutes}:${String(seconds).padStart(2, '0')}`;
+    formattedTime = `${minutes}:${String(seconds).padStart(2, "0")}`;
   }
   return formattedTime;
 }
@@ -55,7 +55,7 @@ function arrayToTimestamp(timeArray) {
 // --- VIDEO PLAYER AND UI LOGIC ---
 
 function findVideo() {
-  return document.querySelector('video');
+  return document.querySelector("video");
 }
 
 /**
@@ -73,7 +73,7 @@ function stopPauseTimer() {
  * Starts a timer to pause at a specific video timestamp.
  */
 function startPauseTimer(targetTime) {
-  stopPauseTimer(); 
+  stopPauseTimer();
   const video = findVideo();
   if (!video) return;
 
@@ -113,6 +113,23 @@ function startRealTimeTimer(timeStr) {
       stopPauseTimer();
     }
   }, 1000); // Check every second
+}
+
+/**
+ * Temporarily changes a label's text to "Set!"
+ * @param {HTMLElement} labelElement
+ * @param {string} originalText
+ */
+function showSetFeedback(labelElement, originalText) {
+  if (!labelElement) return;
+
+  labelElement.textContent = "Set!";
+
+  setTimeout(() => {
+    labelElement.textContent = originalText;
+    labelElement.style.color = "";
+    labelElement.style.fontWeight = "normal";
+  }, 1000);
 }
 
 function injectPanel() {
@@ -184,7 +201,7 @@ function injectPanel() {
     </style>
     <div id="panel-controls">
         <div class="input-group">
-            <label style="font-size: 12px; opacity: 0.8;">Timestamp</label>
+            <label id="timestampLabel" style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
                 <input type="text" id="timestampInput" placeholder="HH:MM:SS">
                 <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
@@ -192,7 +209,7 @@ function injectPanel() {
         </div>
 
         <div class="input-group">
-            <label style="font-size: 12px; opacity: 0.8;">Percentage</label>
+            <label id="percentageLabel" style="font-size: 12px; opacity: 0.8;">Percentage</label>
             <div class="horizontal-row">
                 <input type="number" id="scaleValue" min="0" max="100" value="100" style="width: 50px; flex: none;">
                 
@@ -203,7 +220,7 @@ function injectPanel() {
         </div>
 
         <div class="input-group">
-            <label style="font-size: 12px; opacity: 0.8;">Real-Time</label>
+            <label id="realTimeLabel" style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
                 <input type="time" id="realTimeInput">
                 <button id="setRealTime"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
@@ -211,7 +228,8 @@ function injectPanel() {
         </div>
     </div>
   `;
-  panel.style.cssText = "position: fixed; top: 10px; right: 10px; z-index: 9999;";
+  panel.style.cssText =
+    "position: fixed; top: 10px; right: 10px; z-index: 9999;";
   document.body.appendChild(panel);
   attachPanelListeners();
 }
@@ -229,42 +247,55 @@ function attachPanelListeners() {
   const partitionBtn = panel.querySelector("#partitionOfVideoLength");
 
   // Sync slider and number
-  scaleSlider?.addEventListener("input", () => scaleValueInput.value = scaleSlider.value);
-  scaleValueInput?.addEventListener("input", () => scaleSlider.value = scaleValueInput.value);
+  scaleSlider?.addEventListener(
+    "input",
+    () => (scaleValueInput.value = scaleSlider.value),
+  );
+  scaleValueInput?.addEventListener(
+    "input",
+    () => (scaleSlider.value = scaleValueInput.value),
+  );
 
-  // Video Timestamp Button
+  // Timestamp Button
   chosenTimestampBtn?.addEventListener("click", () => {
     const timestamp = timestampInput.value;
     if (isValidHMSFormat(timestamp)) {
       const parts = timestampToArray(timestamp);
       startPauseTimer(parts[0] * 3600 + parts[1] * 60 + parts[2]);
+      showSetFeedback(panel.querySelector("#timestampLabel"), "Timestamp");
     }
-  });
-
-  // NEW: Real-World Clock Button
-  setRealTimeBtn?.addEventListener("click", () => {
-    const timeVal = realTimeInput.value;
-    if (timeVal) startRealTimeTimer(timeVal);
   });
 
   // Percentage Button
   partitionBtn?.addEventListener("click", () => {
     const percentage = parseFloat(scaleValueInput.value);
     const video = findVideo();
-    if (video && !isNaN(percentage)) startPauseTimer(video.duration * (percentage / 100));
+    if (video && !isNaN(percentage)) {
+      startPauseTimer(video.duration * (percentage / 100));
+      showSetFeedback(panel.querySelector("#percentageLabel"), "Percentage");
+    }
   });
 
-  closeBtn?.addEventListener("click", () => {
-    panel.remove();
-    chrome.storage.local.set({ isPanelVisible: false });
+  // Real-Time Button
+  setRealTimeBtn?.addEventListener("click", () => {
+    const timeVal = realTimeInput.value;
+    if (timeVal) {
+      startRealTimeTimer(timeVal);
+      showSetFeedback(panel.querySelector("#realTimeLabel"), "Real-Time");
+    }
   });
 }
 
-chrome.storage.local.get(["isPanelVisible"], (res) => res.isPanelVisible && injectPanel());
+chrome.storage.local.get(
+  ["isPanelVisible"],
+  (res) => res.isPanelVisible && injectPanel(),
+);
 
 chrome.runtime.onMessage.addListener((req) => {
   if (req.action === "togglePanel") {
     const p = document.getElementById(panelId);
-    p ? (p.remove(), chrome.storage.local.set({ isPanelVisible: false })) : injectPanel();
+    p
+      ? (p.remove(), chrome.storage.local.set({ isPanelVisible: false }))
+      : injectPanel();
   }
 });
