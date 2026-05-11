@@ -222,7 +222,7 @@ function injectPanel() {
         <div class="input-group">
             <label id="realTimeLabel" style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
-                <input type="time" id="realTimeInput">
+                <input type="time" value="23:59" id="realTimeInput">
                 <button id="setRealTime"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
