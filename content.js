@@ -203,7 +203,7 @@ function injectPanel() {
         <div class="input-group">
             <label id="timestampLabel" style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
-                <input type="text" id="timestampInput" placeholder="HH:MM:SS">
+                <input type="text" id="timestampInput" value="HH:MM:SS">
                 <button id="chosenTimestamp"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
@@ -222,7 +222,7 @@ function injectPanel() {
         <div class="input-group">
             <label id="realTimeLabel" style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
-                <input type="time" value="23:59" id="realTimeInput">
+                <input type="time" id="realTimeInput" value="23:59">
                 <button id="setRealTime"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
