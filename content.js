@@ -127,6 +127,8 @@ function injectPanel() {
         --input-bg: #f9f9f9; --input-border: #ddd; --button-text: #fff;
         --blue-btn-bg: #007bff; --green-btn-bg: #28a745; --red-btn-bg: #dc3545;
         --orange-btn-bg: #fd7e14;
+        --light-grey-btn-bg: #D3D3D3;
+        --dark-grey-btn-bg: #A9A9A9;
       }
       @media (prefers-color-scheme: dark) {
         :root {
@@ -140,7 +142,7 @@ function injectPanel() {
         box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif;
         display: flex; flex-direction: column; gap: 15px;
         border: 1px solid var(--panel-border); color: var(--panel-text);
-        width: 200px; /* Increased width to accommodate horizontal layout */
+        width: 175px; /* Increased width to accommodate horizontal layout */
       }
       .input-group {
         display: flex;
@@ -172,9 +174,9 @@ function injectPanel() {
         transition: opacity 0.2s;
         flex-shrink: 0; /* Prevents the button from squishing in tight rows */
       }
-      #chosenTimestamp { background: var(--blue-btn-bg); }
-      #partitionOfVideoLength { background: var(--green-btn-bg); }
-      #setRealTime { background: var(--orange-btn-bg); }
+      #chosenTimestamp { background: var(--light-grey-btn-bg); }
+      #partitionOfVideoLength { background: var(--light-grey-btn-bg); }
+      #setRealTime { background: var(--light-grey-btn-bg); }
     </style>
     <div id="panel-controls">
         <div class="input-group">
