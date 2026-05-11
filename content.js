@@ -171,8 +171,12 @@ function injectPanel() {
         color: var(--button-text);
         border: none;
         cursor: pointer;
-        transition: opacity 0.2s;
+        transition: filter 0.2s ease, transform 0.1s ease;
         flex-shrink: 0; /* Prevents the button from squishing in tight rows */
+      }
+      #panel-controls button:hover {
+        filter: brightness(0.85); /* Slightly darkens the button */
+        transform: scale(1.05);   /* Optional: slightly grows the button */
       }
       #chosenTimestamp { background: var(--light-grey-btn-bg); }
       #partitionOfVideoLength { background: var(--light-grey-btn-bg); }
