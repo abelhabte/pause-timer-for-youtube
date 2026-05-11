@@ -159,7 +159,7 @@ function injectPanel() {
         box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif;
         display: flex; flex-direction: column; gap: 15px;
         border: 1px solid var(--panel-border); color: var(--panel-text);
-        width: 175px; /* Increased width to accommodate horizontal layout */
+        width: 150px; /* Increased width to accommodate horizontal layout */
       }
       .input-group {
         display: flex;
@@ -211,10 +211,7 @@ function injectPanel() {
         <div class="input-group">
             <label id="percentageLabel" style="font-size: 12px; opacity: 0.8;">Percentage</label>
             <div class="horizontal-row">
-                <input type="number" id="scaleValue" min="0" max="100" value="100" style="width: 50px; flex: none;">
-                
-                <input type="range" id="scaleSlider" min="0" max="100" value="100" style="flex: 1;">
-                
+                <input type="number" id="scaleValue" min="0" max="100" value="100">
                 <button id="partitionOfVideoLength"><img src="${pauseUrl}" alt="Pause" width="32" height="32"></button>
             </div>
         </div>
@@ -242,19 +239,8 @@ function attachPanelListeners() {
   const chosenTimestampBtn = panel.querySelector("#chosenTimestamp");
   const realTimeInput = panel.querySelector("#realTimeInput");
   const setRealTimeBtn = panel.querySelector("#setRealTime");
-  const scaleSlider = panel.querySelector("#scaleSlider");
   const scaleValueInput = panel.querySelector("#scaleValue");
   const partitionBtn = panel.querySelector("#partitionOfVideoLength");
-
-  // Sync slider and number
-  scaleSlider?.addEventListener(
-    "input",
-    () => (scaleValueInput.value = scaleSlider.value),
-  );
-  scaleValueInput?.addEventListener(
-    "input",
-    () => (scaleSlider.value = scaleValueInput.value),
-  );
 
   // Timestamp Button
   chosenTimestampBtn?.addEventListener("click", () => {
