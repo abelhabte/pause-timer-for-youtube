@@ -139,6 +139,10 @@ function injectPanel() {
         display: flex; align-items: center; justify-content: center;
         background: var(--light-grey-btn-bg); border: none; cursor: pointer;
       }
+      #panel-controls button:hover {
+        background: #A9A9A9; /* A darker grey for the hover state */
+        transition: background 0.2s ease; /* Optional: makes the transition smooth */
+      }
     </style>
     <div id="panel-controls">
         <div class="input-group">
