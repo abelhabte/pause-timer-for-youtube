@@ -112,7 +112,7 @@ function injectPanel() {
       :root {
         --panel-bg: #fff; --panel-text: #000; --panel-border: #ccc;
         --input-bg: #f9f9f9; --input-border: #ddd; --button-text: #fff;
-        --light-grey-btn-bg: #D3D3D3;
+        --white-btn-bg: #ffffff;
       }
       @media (prefers-color-scheme: dark) {
         :root {
@@ -137,7 +137,7 @@ function injectPanel() {
       #panel-controls button {
         width: 32px; height: 32px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        background: var(--light-grey-btn-bg); border: none; cursor: pointer;
+        background: var(--white-btn-bg); border: none; cursor: pointer;
       }
       #panel-controls button:hover {
         background: #A9A9A9; /* A darker grey for the hover state */
