@@ -130,6 +130,15 @@ function injectPanel() {
         padding: 6px; border: 1px solid var(--input-border);
         border-radius: 4px; background: var(--input-bg); color: var(--panel-text);
         flex: 1; min-width: 0;
+        transition: border-color 0.2s ease;
+      }
+      #panel-controls input:hover {
+        border-color: #007bff; /* A standard blue color */
+        outline: none;         /* Optional: removes the default browser focus ring */
+      }
+      #panel-controls input:focus {
+        border-color: #0056b3; 
+        outline: none;
       }
       #panel-controls button {
         width: 32px; height: 32px; border-radius: 50%;
@@ -139,6 +148,14 @@ function injectPanel() {
       #panel-controls button:hover {
         background: #A9A9A9; /* A darker grey for the hover state */
         transition: background 0.2s ease; /* Optional: makes the transition smooth */
+      }
+      #panel-controls button:focus-visible {
+        outline: 2px solid #0056b3; /* Your darker blue shade */
+        outline-offset: 2px;       /* Adds a small gap between the button and the ring */
+      }
+      /* Optional: Removes the default outline for mouse clicks if desired */
+      #panel-controls button:focus:not(:focus-visible) {
+        outline: none;
       }
     </style>
     <div id="panel-controls">
