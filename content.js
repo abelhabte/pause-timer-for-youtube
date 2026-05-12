@@ -5,7 +5,7 @@
 /** @type {number | null} */
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
-const pauseUrl = chrome.runtime.getURL("icons/pause_333333.svg");
+const pauseUrl = chrome.runtime.getURL("icons/pause_222.svg");
 
 // --- HELPER FUNCTIONS ---
 
@@ -116,8 +116,8 @@ function injectPanel() {
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --panel-bg: #333; --panel-text: #eee; --panel-border: #555;
-          --input-bg: #444; --input-border: #666;
+          --panel-bg: #222; --panel-text: #eee; --panel-border: #555;
+          --input-bg: #333; --input-border: #666;
         }
       }
       #panel-controls {
