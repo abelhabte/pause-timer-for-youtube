@@ -251,6 +251,7 @@ chrome.runtime.onMessage.addListener((req) => {
   if (req.action === "togglePanel") {
     const p = document.getElementById(panelId);
     if (p) {
+      stopPauseTimer();
       p.remove();
       chrome.storage.local.set({ isPanelVisible: false });
     } else {
