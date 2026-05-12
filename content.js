@@ -112,9 +112,9 @@ function injectPanel() {
       :root {
         --panel-bg: #111;
         --panel-text: #fff;
-        --panel-border: #555;
+        --panel-border: #fff;
         --input-bg: #222;
-        --input-border: #666;
+        --input-border: #fff;
         --white-btn-bg: #fff;
       }
       #panel-controls {
