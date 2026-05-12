@@ -25,7 +25,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icons/check_mark.svg", "icons/pause_222.svg"],
+      "resources": ["icons/check_mark.svg", "icons/pause_111.svg"],
       "matches": ["https://www.youtube.com/*"]
     }
   ],
