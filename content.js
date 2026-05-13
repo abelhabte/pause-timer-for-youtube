@@ -142,6 +142,21 @@ function injectPanel() {
         border-color: #fe0000; / *Standard red */
         outline: none;
       }
+      /* Hide arrows for Chrome, Safari, Edge, and Opera */
+      #panel-controls input::-webkit-outer-spin-button,
+      #panel-controls input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      /* Hide arrows for Firefox */
+      #panel-controls input[type=number] {
+        -moz-appearance: textfield;
+      }
+      /* Hides the clock icon in the Real-Time input */
+      #panel-controls input::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+      }
       #panel-controls button {
         width: 32px; height: 32px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
