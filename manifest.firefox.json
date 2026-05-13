@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Pause Timer for YouTube",
-  "version": "1.1",
+  "version": "2.0",
   "description": "Timer that pauses YouTube videos by entering the timestamp or percentage",
   "icons": {
     "16": "icons/16x16.png",
@@ -16,17 +16,20 @@
     "scripts": ["background.js"]
   },
   "permissions": ["tabs", "storage"],
-  "host_permissions": ["https://www.youtube.com/*"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://music.youtube.com/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"],
       "js": ["content.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icons/check_mark.svg", "icons/close.svg"],
-      "matches": ["https://www.youtube.com/*"]
+      "resources": ["icons/pause.svg"],
+      "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"]
     }
   ],
   "browser_specific_settings": {
