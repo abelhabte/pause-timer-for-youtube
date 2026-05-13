@@ -153,10 +153,6 @@ function injectPanel() {
         outline: 2px solid #fe0000; /* Standard red shade */
         outline-offset: 2px;       /* Adds a small gap between the button and the ring */
       }
-      /* Optional: Removes the default outline for mouse clicks if desired */
-      #panel-controls button:focus:not(:focus-visible) {
-        outline: none;
-      }
     </style>
     <div id="panel-controls">
         <div class="input-group">
