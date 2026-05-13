@@ -133,11 +133,11 @@ function injectPanel() {
         transition: border-color 0.2s ease;
       }
       #panel-controls input:hover {
-        border-color: #007bff; /* A standard blue color */
+        border-color: #ff8080; /* Lighter red shade */
         outline: none;         /* Optional: removes the default browser focus ring */
       }
       #panel-controls input:focus {
-        border-color: #0056b3; 
+        border-color: #fe0000; /*Standard red shade */
         outline: none;
       }
       #panel-controls button {
@@ -146,11 +146,11 @@ function injectPanel() {
         background: var(--white-btn-bg); border: none; cursor: pointer;
       }
       #panel-controls button:hover {
-        background: #A9A9A9; /* A darker grey for the hover state */
+        background: #989898; /* A darker grey for the hover state */
         transition: background 0.2s ease; /* Optional: makes the transition smooth */
       }
       #panel-controls button:focus-visible {
-        outline: 2px solid #0056b3; /* Your darker blue shade */
+        outline: 2px solid #fe0000; /* Standard red shade */
         outline-offset: 2px;       /* Adds a small gap between the button and the ring */
       }
       /* Optional: Removes the default outline for mouse clicks if desired */
