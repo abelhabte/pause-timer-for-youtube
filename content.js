@@ -131,6 +131,7 @@ function injectPanel() {
         border-radius: 4px; background: var(--input-bg); color: var(--panel-text);
         flex: 1; min-width: 0;
         transition: border-color 0.2s ease;
+        outline: none;
       }
       #panel-controls input:hover {
         border-color: #ff8080; /* Light red */
