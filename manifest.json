@@ -16,17 +16,20 @@
     "scripts": ["background.js"]
   },
   "permissions": ["tabs", "storage"],
-  "host_permissions": ["https://www.youtube.com/*"],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "https://music.youtube.com/*"
+  ],
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/*"],
+      "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"],
       "js": ["content.js"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["icons/check_mark.svg", "icons/pause_111.svg"],
-      "matches": ["https://www.youtube.com/*"]
+      "resources": ["icons/pause.svg"],
+      "matches": ["https://www.youtube.com/*", "https://music.youtube.com/*"]
     }
   ],
   "browser_specific_settings": {

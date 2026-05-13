@@ -5,7 +5,7 @@
 /** @type {number | null} */
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
-const pauseUrl = chrome.runtime.getURL("icons/pause_111.svg");
+const pauseUrl = chrome.runtime.getURL("icons/pause.svg");
 
 // --- HELPER FUNCTIONS ---
 
