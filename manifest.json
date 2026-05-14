@@ -15,7 +15,7 @@
   "background": {
     "scripts": ["background.js"]
   },
-  "permissions": ["tabs", "storage"],
+  "permissions": ["tabs", "storage", "scripting"],
   "host_permissions": [
     "https://www.youtube.com/*",
     "https://music.youtube.com/*"
