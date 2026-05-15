@@ -32,11 +32,11 @@ If you want to run the extension locally:
 1. Clone the Repository: `git clone https://github.com/abelhabte/pause-timer-for-youtube.git`
 2. Switch Manifest: `node switch.js chrome # or firefox`
 3. Open Extension Management:
-    * Chrome: Navigate to `chrome://extensions/` and turn on Developer mode.
-    * Firefox: Navigate to `about:debugging#/runtime/this-firefox`.
+    * Chrome: Navigate to `chrome://extensions/` and turn on Developer mode
+    * Firefox: Navigate to `about:debugging#/runtime/this-firefox`
 4. Load the Extension:
-    * Chrome: Click Load unpacked and select the project folder.
-    * Firefox: Click Load Temporary Add-on and select the manifest.json file.
+    * Chrome: Click Load unpacked and select the project folder
+    * Firefox: Click Load Temporary Add-on and select the manifest.json file
 
 ## Technical Stack
 
