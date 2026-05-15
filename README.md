@@ -11,7 +11,7 @@ Pause Timer for YouTube is a browser extension that pauses YouTube videos by ent
 | <img src="screenshots/screenshot_2.png" width="280" alt="Prompt Editor"> | <img src="screenshots/screenshot_4.png" width="280" alt="Dark Mode"> |
 
 | Image 1 | Image 2 |
-| :---: | :---: | :---: |
+| :---: | :---: |
 | ![Image 1](screenshot/screenshot_1.png) | ![Image 2](screenshot/screenshot_2.png) |
 
 
