@@ -17,16 +17,14 @@ Pause Timer for YouTube is a browser extension designed for efficiently consumin
 * Real-Time Scheduler: Set a specific wall-clock time (e.g., 11:30 PM) for the video to pause, perfect for those who fall asleep watching videos
 * Cross-Platform: Full support for both YouTube and YouTube Music
 
-## Getting Started
+## Installation
 
-### Installation
-
-#### Extension Store
+### Extension Store
 
 * Install on [Chrome](https://chromewebstore.google.com/detail/pause-timer-for-youtube/magjipjiapiklggpnfmkdmfdiadonlnh)
 * Install on [Firefox](https://addons.mozilla.org/en-CA/firefox/addon/pause-timer-for-youtube/)
 
-#### Local Install
+### Local Install
 
 If you want to run the extension locally:
 1. Clone the Repository: `git clone https://github.com/abelhabte/pause-timer-for-youtube.git`
