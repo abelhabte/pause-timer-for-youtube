@@ -5,6 +5,10 @@
 Pause Timer for YouTube is a browser extension that pauses YouTube videos by entering the timestamp or percentage. Useful for those who watch long YouTube videos.
 
 ## Gallery
+| Light Interface | Dark Interface |
+| :---: | :---: |
+| <img src="screenshots/screenshot_1.png" width="280" alt="Main Interface"> | <img src="screenshots/screenshot_3.png" width="280" alt="Folder Management"> |
+| <img src="screenshots/screenshot_2.png" width="280" alt="Prompt Editor"> | <img src="screenshots/screenshot_4.png" width="280" alt="Dark Mode"> |
 
 ## Key Features
 
