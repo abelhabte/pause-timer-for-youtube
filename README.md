@@ -4,15 +4,9 @@
 
 Pause Timer for YouTube is a browser extension that pauses YouTube videos by entering the timestamp or percentage. Useful for those who watch long YouTube videos.
 
----
-
 ## Gallery
 
----
-
 ## Key Features
-
----
 
 ## Getting Started
 
@@ -33,8 +27,6 @@ If you want to run the extension locally:
     * Firefox: Click Load Temporary Add-on and select the manifest.json file.
 
 ### Basic Usage
-
----
 
 ## Technical Stack
 * **HTML**
