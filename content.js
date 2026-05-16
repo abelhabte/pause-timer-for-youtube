@@ -170,6 +170,10 @@ function injectPanel() {
         outline: 2px solid #fe0000; /* Standard red shade */
         outline-offset: 2px;       /* Adds a small gap between the button and the ring */
       }
+      /* Hide the panel completely when full screen */
+      .fullscreen-hidden {
+        display: none !important;
+      }
     </style>
     <div id="panel-controls">
         <div class="input-group">
@@ -270,6 +274,19 @@ window.addEventListener("yt-navigate-finish", () => {
         { once: true },
       );
     }
+  }
+});
+
+// Hide or show panel during fullscreen transitions
+document.addEventListener("fullscreenchange", () => {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  // If there is an active fullscreen element, hide our panel controls
+  if (document.fullscreenElement) {
+    panel.classList.add("fullscreen-hidden");
+  } else {
+    panel.classList.remove("fullscreen-hidden");
   }
 });
 
