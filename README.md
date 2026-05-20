@@ -1,5 +1,3 @@
-<img src="icons/logo_512.png" alt="logo" width="200" height="200">
-
 # pause-timer-for-youtube
 
 Pause Timer for YouTube is a browser extension designed for efficiently consuming long-form content. Whether if it's a lecture/tutorial, documentary, or three-hour podcast, this tool allows you to schedule pauses based on video progress or actual real-time.
