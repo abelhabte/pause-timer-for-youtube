@@ -214,8 +214,21 @@ function injectPanel() {
     );
   }
 
-  panel.style.cssText =
-    "position: fixed; top: 10px; right: 10px; z-index: 9999; transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;";
+  chrome.storage.local.get(["panelPosition"], (res) => {
+    let positionStyles = "top: 10px; right: 10px;";
+
+    if (res.panelPosition) {
+      const pos = res.panelPosition;
+      positionStyles = "";
+      if (pos.top !== undefined) positionStyles += `top: ${pos.top}; `;
+      if (pos.bottom !== undefined) positionStyles += `bottom: ${pos.bottom}; `;
+      if (pos.left !== undefined) positionStyles += `left: ${pos.left}; `;
+      if (pos.right !== undefined) positionStyles += `right: ${pos.right}; `;
+    }
+
+    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;`;
+  });
+
   document.body.appendChild(panel);
 
   attachPanelListeners();
@@ -285,19 +298,27 @@ function makePanelDraggableAndSnappable(panel) {
     panel.style.right = "auto";
     panel.style.bottom = "auto";
 
+    let savedPosition = {};
+
     if (currentCenterX < midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.left = `${margin}px`;
+      savedPosition = { top: `${margin}px`, left: `${margin}px` };
     } else if (currentCenterX >= midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.right = `${margin}px`;
+      savedPosition = { top: `${margin}px`, right: `${margin}px` };
     } else if (currentCenterX < midX && currentCenterY >= midY) {
       panel.style.bottom = `${margin}px`;
       panel.style.left = `${margin}px`;
+      savedPosition = { bottom: `${margin}px`, left: `${margin}px` };
     } else {
       panel.style.bottom = `${margin}px`;
       panel.style.right = `${margin}px`;
+      savedPosition = { bottom: `${margin}px`, right: `${margin}px` };
     }
+
+    chrome.storage.local.set({ panelPosition: savedPosition });
   }
 }
 
