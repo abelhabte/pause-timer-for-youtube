@@ -215,9 +215,90 @@ function injectPanel() {
   }
 
   panel.style.cssText =
-    "position: fixed; top: 10px; right: 10px; z-index: 9999;";
+    "position: fixed; top: 10px; right: 10px; z-index: 9999; transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;";
   document.body.appendChild(panel);
+
   attachPanelListeners();
+  makePanelDraggableAndSnappable(panel);
+}
+
+function makePanelDraggableAndSnappable(panel) {
+  const controls = panel.querySelector("#panel-controls");
+  let isDragging = false;
+  let startX, startY, initialLeft, initialTop;
+  const margin = 10;
+
+  controls.addEventListener("mousedown", (e) => {
+    if (e.target.closest("input") || e.target.closest("button")) return;
+
+    isDragging = true;
+
+    panel.style.transition = "none";
+
+    const rect = panel.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+
+    startX = e.clientX;
+    startY = e.clientY;
+
+    panel.style.right = "auto";
+    panel.style.bottom = "auto";
+    panel.style.left = `${initialLeft}px`;
+    panel.style.top = `${initialTop}px`;
+
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+  });
+
+  function onMouseMove(e) {
+    if (!isDragging) return;
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+
+    panel.style.left = `${initialLeft + deltaX}px`;
+    panel.style.top = `${initialTop + deltaY}px`;
+  }
+
+  function onMouseUp() {
+    if (!isDragging) return;
+    isDragging = false;
+
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup", onMouseUp);
+
+    panel.style.transition =
+      "top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease";
+
+    const rect = panel.getBoundingClientRect();
+    const panelWidth = rect.width;
+    const panelHeight = rect.height;
+
+    const midX = window.innerWidth / 2;
+    const midY = window.innerHeight / 2;
+
+    const currentCenterX = rect.left + panelWidth / 2;
+    const currentCenterY = rect.top + panelHeight / 2;
+
+    panel.style.top = "auto";
+    panel.style.left = "auto";
+    panel.style.right = "auto";
+    panel.style.bottom = "auto";
+
+    if (currentCenterX < midX && currentCenterY < midY) {
+      panel.style.top = `${margin}px`;
+      panel.style.left = `${margin}px`;
+    } else if (currentCenterX >= midX && currentCenterY < midY) {
+      panel.style.top = `${margin}px`;
+      panel.style.right = `${margin}px`;
+    } else if (currentCenterX < midX && currentCenterY >= midY) {
+      panel.style.bottom = `${margin}px`;
+      panel.style.left = `${margin}px`;
+    } else {
+      panel.style.bottom = `${margin}px`;
+      panel.style.right = `${margin}px`;
+    }
+  }
 }
 
 function attachPanelListeners() {
