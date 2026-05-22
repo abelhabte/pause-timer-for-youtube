@@ -183,21 +183,21 @@ function injectPanel() {
         <div class="input-group">
             <label id="timestampLabel" style="font-size: 12px; opacity: 0.8;">Timestamp</label>
             <div class="horizontal-row">
-                <input type="text" id="timestampInput" value="${duration}">
+                <input type="text" id="timestampInput" value="${duration}" autocomplete="off">
                 <button id="chosenTimestamp"><img src="${pauseUrl}" width="32" height="32"></button>
             </div>
         </div>
         <div class="input-group">
             <label id="percentageLabel" style="font-size: 12px; opacity: 0.8;">Percentage</label>
             <div class="horizontal-row">
-                <input type="number" id="scaleValue" min="0" max="100" value="100">
+                <input type="number" id="scaleValue" min="0" max="100" value="100" autocomplete="off">
                 <button id="partitionOfVideoLength"><img src="${pauseUrl}" width="32" height="32"></button>
             </div>
         </div>
         <div class="input-group">
             <label id="realTimeLabel" style="font-size: 12px; opacity: 0.8;">Real-Time</label>
             <div class="horizontal-row">
-                <input type="time" id="realTimeInput" value="23:59">
+                <input type="time" id="realTimeInput" value="23:59" autocomplete="off">
                 <button id="setRealTime"><img src="${pauseUrl}" width="32" height="32"></button>
             </div>
         </div>
