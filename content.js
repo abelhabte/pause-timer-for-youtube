@@ -214,29 +214,45 @@ function injectPanel() {
     );
   }
 
-  chrome.storage.local.get(["panelPositionRatio"], (res) => {
+  chrome.storage.local.get(["panelPositionData"], (res) => {
     let positionStyles = "top: 10px; right: 10px;";
 
-    if (res.panelPositionRatio) {
-      const { xRatio, yRatio } = res.panelPositionRatio;
+    if (res.panelPositionData) {
+      const { xRatio, yRatio, corner } = res.panelPositionData;
       const margin = 10;
-      
-      const approxWidth = 176; 
+      const approxWidth = 176;
       const approxHeight = 220;
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+      const effectiveMarginRight = margin + scrollbarWidth;
 
-      let targetLeft = window.innerWidth * xRatio;
-      let targetTop = window.innerHeight * yRatio;
+      let targetLeft, targetTop;
 
-      const maxLeft = window.innerWidth - approxWidth - margin;
-      const maxTop = window.innerHeight - approxHeight - margin;
-      
-      targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
-      targetTop = Math.max(margin, Math.min(targetTop, maxTop));
+      if (corner === "top-left") {
+        targetTop = margin;
+        targetLeft = margin;
+      } else if (corner === "top-right") {
+        targetTop = margin;
+        targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+      } else if (corner === "bottom-left") {
+        targetTop = window.innerHeight - approxHeight - margin;
+        targetLeft = margin;
+      } else if (corner === "bottom-right") {
+        targetTop = window.innerHeight - approxHeight - margin;
+        targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+      } else {
+        targetLeft = window.innerWidth * xRatio;
+        targetTop = window.innerHeight * yRatio;
+        const maxLeft = window.innerWidth - approxWidth - margin;
+        const maxTop = window.innerHeight - approxHeight - margin;
+        targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
+        targetTop = Math.max(margin, Math.min(targetTop, maxTop));
+      }
 
       positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
     }
 
-    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;`;
+    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; transition: top 0.2s ease, left 0.2s ease;`;
   });
 
   document.body.appendChild(panel);
@@ -302,30 +318,38 @@ function makePanelDraggableAndSnappable(panel) {
     const currentCenterX = rect.left + panelWidth / 2;
     const currentCenterY = rect.top + panelHeight / 2;
 
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
     const effectiveMarginRight = margin + scrollbarWidth;
+
+    let targetCorner = "top-right";
 
     if (currentCenterX < midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.left = `${margin}px`;
+      targetCorner = "top-left";
     } else if (currentCenterX >= midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.left = `${window.innerWidth - panelWidth - effectiveMarginRight}px`;
+      targetCorner = "top-right";
     } else if (currentCenterX < midX && currentCenterY >= midY) {
       panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
       panel.style.left = `${margin}px`;
+      targetCorner = "bottom-left";
     } else {
       panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
       panel.style.left = `${window.innerWidth - panelWidth - effectiveMarginRight}px`;
+      targetCorner = "bottom-right";
     }
 
     const finalRect = panel.getBoundingClientRect();
-    const positionRatio = {
+    const positionData = {
       xRatio: finalRect.left / window.innerWidth,
-      yRatio: finalRect.top / window.innerHeight
+      yRatio: finalRect.top / window.innerHeight,
+      corner: targetCorner,
     };
-    
-    chrome.storage.local.set({ panelPositionRatio: positionRatio });
+
+    chrome.storage.local.set({ panelPositionData: positionData });
   }
 }
 
@@ -420,16 +444,27 @@ window.addEventListener("resize", () => {
 
   const rect = panel.getBoundingClientRect();
   const margin = 10;
-  
-  const maxLeft = window.innerWidth - rect.width - margin;
-  const maxTop = window.innerHeight - rect.height - margin;
+  const scrollbarWidth =
+    window.innerWidth - document.documentElement.clientWidth;
+  const effectiveMarginRight = margin + scrollbarWidth;
 
-  let currentLeft = parseFloat(panel.style.left);
-  let currentTop = parseFloat(panel.style.top);
+  panel.style.transition = "none";
 
-  let newLeft = Math.max(margin, Math.min(currentLeft, maxLeft));
-  let newTop = Math.max(margin, Math.min(currentTop, maxTop));
+  chrome.storage.local.get(["panelPositionData"], (res) => {
+    const corner = res.panelPositionData?.corner || "top-right";
 
-  panel.style.left = `${newLeft}px`;
-  panel.style.top = `${newTop}px`;
+    if (corner === "top-left") {
+      panel.style.top = `${margin}px`;
+      panel.style.left = `${margin}px`;
+    } else if (corner === "top-right") {
+      panel.style.top = `${margin}px`;
+      panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
+    } else if (corner === "bottom-left") {
+      panel.style.top = `${window.innerHeight - rect.height - margin}px`;
+      panel.style.left = `${margin}px`;
+    } else if (corner === "bottom-right") {
+      panel.style.top = `${window.innerHeight - rect.height - margin}px`;
+      panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
+    }
+  });
 });
