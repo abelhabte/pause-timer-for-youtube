@@ -280,8 +280,7 @@ function makePanelDraggableAndSnappable(panel) {
     document.removeEventListener("mousemove", onMouseMove);
     document.removeEventListener("mouseup", onMouseUp);
 
-    panel.style.transition =
-      "top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease";
+    panel.style.transition = "top 0.2s ease, left 0.2s ease";
 
     const rect = panel.getBoundingClientRect();
     const panelWidth = rect.width;
@@ -293,31 +292,21 @@ function makePanelDraggableAndSnappable(panel) {
     const currentCenterX = rect.left + panelWidth / 2;
     const currentCenterY = rect.top + panelHeight / 2;
 
-    panel.style.top = "auto";
-    panel.style.left = "auto";
-    panel.style.right = "auto";
-    panel.style.bottom = "auto";
-
-    let savedPosition = {};
-
     if (currentCenterX < midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.left = `${margin}px`;
-      savedPosition = { top: `${margin}px`, left: `${margin}px` };
     } else if (currentCenterX >= midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
-      panel.style.right = `${margin}px`;
-      savedPosition = { top: `${margin}px`, right: `${margin}px` };
+      panel.style.left = `${window.innerWidth - panelWidth - margin}px`;
     } else if (currentCenterX < midX && currentCenterY >= midY) {
-      panel.style.bottom = `${margin}px`;
+      panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
       panel.style.left = `${margin}px`;
-      savedPosition = { bottom: `${margin}px`, left: `${margin}px` };
     } else {
-      panel.style.bottom = `${margin}px`;
-      panel.style.right = `${margin}px`;
-      savedPosition = { bottom: `${margin}px`, right: `${margin}px` };
+      panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
+      panel.style.left = `${window.innerWidth - panelWidth - margin}px`;
     }
 
+    const savedPosition = { top: panel.style.top, left: panel.style.left };
     chrome.storage.local.set({ panelPosition: savedPosition });
   }
 }
