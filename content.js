@@ -292,18 +292,22 @@ function makePanelDraggableAndSnappable(panel) {
     const currentCenterX = rect.left + panelWidth / 2;
     const currentCenterY = rect.top + panelHeight / 2;
 
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    const effectiveMarginRight = margin + scrollbarWidth;
+
     if (currentCenterX < midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
       panel.style.left = `${margin}px`;
     } else if (currentCenterX >= midX && currentCenterY < midY) {
       panel.style.top = `${margin}px`;
-      panel.style.left = `${window.innerWidth - panelWidth - margin}px`;
+      panel.style.left = `${window.innerWidth - panelWidth - effectiveMarginRight}px`;
     } else if (currentCenterX < midX && currentCenterY >= midY) {
       panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
       panel.style.left = `${margin}px`;
     } else {
       panel.style.top = `${window.innerHeight - panelHeight - margin}px`;
-      panel.style.left = `${window.innerWidth - panelWidth - margin}px`;
+      panel.style.left = `${window.innerWidth - panelWidth - effectiveMarginRight}px`;
     }
 
     const savedPosition = { top: panel.style.top, left: panel.style.left };
