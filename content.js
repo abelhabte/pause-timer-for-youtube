@@ -271,8 +271,11 @@ function makePanelDraggableAndSnappable(panel) {
   controls.addEventListener("mousedown", (e) => {
     if (e.target.closest("input") || e.target.closest("button")) return;
 
-    isDragging = true;
+    e.preventDefault();
+    document.body.style.userSelect = "none";
+    document.body.style.webkitUserSelect = "none";
 
+    isDragging = true;
     panel.style.transition = "none";
 
     const rect = panel.getBoundingClientRect();
@@ -281,11 +284,6 @@ function makePanelDraggableAndSnappable(panel) {
 
     startX = e.clientX;
     startY = e.clientY;
-
-    panel.style.right = "auto";
-    panel.style.bottom = "auto";
-    panel.style.left = `${initialLeft}px`;
-    panel.style.top = `${initialTop}px`;
 
     document.addEventListener("mousemove", onMouseMove);
     document.addEventListener("mouseup", onMouseUp);
@@ -303,6 +301,9 @@ function makePanelDraggableAndSnappable(panel) {
   function onMouseUp() {
     if (!isDragging) return;
     isDragging = false;
+
+    document.body.style.userSelect = "";
+    document.body.style.webkitUserSelect = "";
 
     document.removeEventListener("mousemove", onMouseMove);
     document.removeEventListener("mouseup", onMouseUp);
