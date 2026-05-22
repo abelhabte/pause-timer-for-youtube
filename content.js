@@ -214,16 +214,26 @@ function injectPanel() {
     );
   }
 
-  chrome.storage.local.get(["panelPosition"], (res) => {
+  chrome.storage.local.get(["panelPositionRatio"], (res) => {
     let positionStyles = "top: 10px; right: 10px;";
 
-    if (res.panelPosition) {
-      const pos = res.panelPosition;
-      positionStyles = "";
-      if (pos.top !== undefined) positionStyles += `top: ${pos.top}; `;
-      if (pos.bottom !== undefined) positionStyles += `bottom: ${pos.bottom}; `;
-      if (pos.left !== undefined) positionStyles += `left: ${pos.left}; `;
-      if (pos.right !== undefined) positionStyles += `right: ${pos.right}; `;
+    if (res.panelPositionRatio) {
+      const { xRatio, yRatio } = res.panelPositionRatio;
+      const margin = 10;
+      
+      const approxWidth = 176; 
+      const approxHeight = 220;
+
+      let targetLeft = window.innerWidth * xRatio;
+      let targetTop = window.innerHeight * yRatio;
+
+      const maxLeft = window.innerWidth - approxWidth - margin;
+      const maxTop = window.innerHeight - approxHeight - margin;
+      
+      targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
+      targetTop = Math.max(margin, Math.min(targetTop, maxTop));
+
+      positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
     }
 
     panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, bottom 0.2s ease;`;
@@ -292,8 +302,7 @@ function makePanelDraggableAndSnappable(panel) {
     const currentCenterX = rect.left + panelWidth / 2;
     const currentCenterY = rect.top + panelHeight / 2;
 
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     const effectiveMarginRight = margin + scrollbarWidth;
 
     if (currentCenterX < midX && currentCenterY < midY) {
@@ -310,8 +319,13 @@ function makePanelDraggableAndSnappable(panel) {
       panel.style.left = `${window.innerWidth - panelWidth - effectiveMarginRight}px`;
     }
 
-    const savedPosition = { top: panel.style.top, left: panel.style.left };
-    chrome.storage.local.set({ panelPosition: savedPosition });
+    const finalRect = panel.getBoundingClientRect();
+    const positionRatio = {
+      xRatio: finalRect.left / window.innerWidth,
+      yRatio: finalRect.top / window.innerHeight
+    };
+    
+    chrome.storage.local.set({ panelPositionRatio: positionRatio });
   }
 }
 
@@ -398,4 +412,24 @@ chrome.runtime.onMessage.addListener((req) => {
       chrome.storage.local.set({ isPanelVisible: true });
     }
   }
+});
+
+window.addEventListener("resize", () => {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+
+  const rect = panel.getBoundingClientRect();
+  const margin = 10;
+  
+  const maxLeft = window.innerWidth - rect.width - margin;
+  const maxTop = window.innerHeight - rect.height - margin;
+
+  let currentLeft = parseFloat(panel.style.left);
+  let currentTop = parseFloat(panel.style.top);
+
+  let newLeft = Math.max(margin, Math.min(currentLeft, maxLeft));
+  let newTop = Math.max(margin, Math.min(currentTop, maxTop));
+
+  panel.style.left = `${newLeft}px`;
+  panel.style.top = `${newTop}px`;
 });
