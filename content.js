@@ -90,6 +90,7 @@ function injectPanel() {
   const panel = document.createElement("div");
 
   panel.id = panelId;
+  panel.style.cssText = "position: fixed; opacity: 0; z-index: 9999;";
   panel.innerHTML = `
     <style>
       :root {
@@ -252,7 +253,7 @@ function injectPanel() {
       positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
     }
 
-    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; transition: top 0.2s ease, left 0.2s ease;`;
+    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; opacity: 1; transition: top 0.2s ease, left 0.2s ease, opacity 0.1s ease;`;
   });
 
   document.body.appendChild(panel);
