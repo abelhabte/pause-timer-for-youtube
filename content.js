@@ -216,17 +216,16 @@ function injectPanel() {
   }
 
   chrome.storage.local.get(["panelPositionData"], (res) => {
-    let positionStyles = "top: 10px; right: 10px;";
+    let positionStyles = "";
+    const margin = 10;
+    const approxWidth = 176;
+    const approxHeight = 220;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    const effectiveMarginRight = margin + scrollbarWidth;
 
     if (res.panelPositionData) {
       const { xRatio, yRatio, corner } = res.panelPositionData;
-      const margin = 10;
-      const approxWidth = 176;
-      const approxHeight = 220;
-      const scrollbarWidth =
-        window.innerWidth - document.documentElement.clientWidth;
-      const effectiveMarginRight = margin + scrollbarWidth;
-
       let targetLeft, targetTop;
 
       if (corner === "top-left") {
@@ -251,6 +250,11 @@ function injectPanel() {
       }
 
       positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
+    } else {
+      const defaultTop = margin;
+      const defaultLeft =
+        window.innerWidth - approxWidth - effectiveMarginRight;
+      positionStyles = `top: ${defaultTop}px; left: ${defaultLeft}px;`;
     }
 
     panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; opacity: 1; transition: top 0.2s ease, left 0.2s ease, opacity 0.1s ease;`;
