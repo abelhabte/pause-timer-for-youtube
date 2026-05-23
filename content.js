@@ -1,14 +1,3 @@
-if (!chrome.runtime || !chrome.runtime.id) {
-  console.log(
-    "Old content script context invalidated. Cleaning up listeners...",
-  );
-
-  const oldPanel = document.getElementById("youtube-pause-extension-panel");
-  if (oldPanel) oldPanel.remove();
-
-  throw new Error("Context invalidated: Stopping script execution.");
-}
-
 let pauseIntervalId = null;
 const panelId = "youtube-pause-extension-panel";
 const pauseUrl = chrome.runtime.getURL("icons/pause.svg");
