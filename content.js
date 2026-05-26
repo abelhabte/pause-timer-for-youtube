@@ -162,12 +162,16 @@ function injectPanel() {
 
   // --- NEW CODE ---
   chrome.storage.local.get(["panelPositionData"], (res) => {
-    // Wrap in a layout-safe delay to let the YouTube scrollbar settle
+    // Wait 50ms for YouTube's structural layout elements to settle
     setTimeout(() => {
       let positionStyles = "";
       const margin = 10;
-      const approxWidth = 176;
-      const approxHeight = 220;
+
+      // Read the exact rendered dimensions of the panel now that it's in the DOM
+      const rect = panel.getBoundingClientRect();
+      const panelWidth = rect.width || 176;
+      const panelHeight = rect.height || 220;
+
       const scrollbarWidth =
         window.innerWidth - document.documentElement.clientWidth;
       const effectiveMarginRight = margin + scrollbarWidth;
@@ -181,32 +185,37 @@ function injectPanel() {
           targetLeft = margin;
         } else if (corner === "top-right") {
           targetTop = margin;
-          targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+          targetLeft = window.innerWidth - panelWidth - effectiveMarginRight;
         } else if (corner === "bottom-left") {
-          targetTop = window.innerHeight - approxHeight - margin;
+          // Use the exact panel height against the stabilized innerHeight
+          targetTop = window.innerHeight - panelHeight - margin;
           targetLeft = margin;
         } else if (corner === "bottom-right") {
-          targetTop = window.innerHeight - approxHeight - margin;
-          targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+          // Use the exact panel height against the stabilized innerHeight
+          targetTop = window.innerHeight - panelHeight - margin;
+          targetLeft = window.innerWidth - panelWidth - effectiveMarginRight;
         } else {
           targetLeft = window.innerWidth * xRatio;
           targetTop = window.innerHeight * yRatio;
-          const maxLeft = window.innerWidth - approxWidth - margin;
-          const maxTop = window.innerHeight - approxHeight - margin;
+          const maxLeft = window.innerWidth - panelWidth - margin;
+          const maxTop = window.innerHeight - panelHeight - margin;
           targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
           targetTop = Math.max(margin, Math.min(targetTop, maxTop));
         }
 
-        positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
+        panel.style.top = `${targetTop}px`;
+        panel.style.left = `${targetLeft}px`;
       } else {
         const defaultTop = margin;
         const defaultLeft =
-          window.innerWidth - approxWidth - effectiveMarginRight;
-        positionStyles = `top: ${defaultTop}px; left: ${defaultLeft}px;`;
+          window.innerWidth - panelWidth - effectiveMarginRight;
+        panel.style.top = `${defaultTop}px`;
+        panel.style.left = `${defaultLeft}px`;
       }
 
-      panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; opacity: 1; transition: top 0.2s ease, left 0.2s ease, opacity 0.1s ease;`;
-    }, 50); // A 50ms breather is usually enough to bypass structural layout shifts
+      // Reveal the panel smoothly once positioning is locked in
+      panel.style.opacity = "1";
+    }, 50);
   });
 
   document.body.appendChild(panel);
@@ -349,11 +358,11 @@ function attachPanelListeners() {
 
 window.addEventListener("yt-navigate-finish", () => {
   if (!isContextValid()) return;
-  
+
   const video = findVideo();
   const input = document.querySelector("#timestampInput");
   const panel = document.getElementById(panelId);
-  
+
   if (video && input) {
     if (!isNaN(video.duration)) {
       input.value = formatTime(video.duration);
@@ -374,13 +383,22 @@ window.addEventListener("yt-navigate-finish", () => {
       const corner = res.panelPositionData?.corner || "top-right";
       const margin = 10;
       const rect = panel.getBoundingClientRect();
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
       const effectiveMarginRight = margin + scrollbarWidth;
 
       if (corner === "top-right") {
+        panel.style.top = `${margin}px`;
         panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
       } else if (corner === "bottom-right") {
+        panel.style.top = `${window.innerHeight - rect.height - margin}px`;
         panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
+      } else if (corner === "bottom-left") {
+        panel.style.top = `${window.innerHeight - rect.height - margin}px`;
+        panel.style.left = `${margin}px`;
+      } else if (corner === "top-left") {
+        panel.style.top = `${margin}px`;
+        panel.style.left = `${margin}px`;
       }
     });
   }
