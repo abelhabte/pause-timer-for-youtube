@@ -300,6 +300,7 @@ function makePanelDraggableAndSnappable(panel) {
       corner: targetCorner,
     };
 
+    if (!isContextValid()) return;  // ← add this before the chrome.storage call
     chrome.storage.local.set({ panelPositionData: positionData });
   }
 }
