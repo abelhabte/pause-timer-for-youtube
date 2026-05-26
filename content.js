@@ -85,6 +85,30 @@ function showSetFeedback(labelElement, originalText) {
 function injectPanel() {
   if (document.getElementById(panelId)) return;
 
+  // Inline the stylesheet so it's always present regardless of extension reload state
+  const styleId = "youtube-pause-extension-style";
+  if (!document.getElementById(styleId)) {
+    const style = document.createElement("style");
+    style.id = styleId;
+    style.textContent = `
+      #youtube-pause-extension-panel { position: fixed; opacity: 0; z-index: 9999; }
+      #panel-controls { padding: 12px; background: #111; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); font-family: sans-serif; display: flex; flex-direction: column; gap: 15px; border: 1px solid #fff; color: #fff; width: 150px; }
+      .input-group { display: flex; flex-direction: column; gap: 5px; }
+      .horizontal-row { display: flex; gap: 8px; align-items: center; }
+      #panel-controls input { padding: 6px; border: 1px solid #fff; border-radius: 4px; background: #222; color: #fff; flex: 1; min-width: 0; transition: border-color 0.2s ease; outline: none; }
+      #panel-controls input:hover { border-color: #ff8080; outline: none; transition: background 0.2s ease; }
+      #panel-controls input:focus { border-color: #fe0000; outline: none; }
+      #panel-controls input::-webkit-outer-spin-button, #panel-controls input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+      #panel-controls input[type=number] { -moz-appearance: textfield; }
+      #panel-controls input::-webkit-calendar-picker-indicator { display: none; -webkit-appearance: none; }
+      #panel-controls button { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: #fff; border: none; cursor: pointer; }
+      #panel-controls button:hover { background: #ff8080; transition: background 0.2s ease; }
+      #panel-controls button:focus-visible { outline: 2px solid #fe0000; outline-offset: 2px; }
+      .fullscreen-hidden { display: none !important; }
+    `;
+    document.head.appendChild(style);
+  }
+
   const video = findVideo();
   const duration = formatTime(video?.duration);
   const panel = document.createElement("div");
