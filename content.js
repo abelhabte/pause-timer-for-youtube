@@ -1,4 +1,9 @@
 let pauseIntervalId = null;
+
+function isContextValid() {
+  return !!(chrome.runtime && chrome.runtime.id);
+}
+
 const panelId = "youtube-pause-extension-panel";
 const pauseUrl = chrome.runtime.getURL("icons/pause.svg");
 
@@ -338,6 +343,7 @@ function attachPanelListeners() {
 }
 
 window.addEventListener("yt-navigate-finish", () => {
+  if (!isContextValid()) return;   // ← add this guard
   const video = findVideo();
   const input = document.querySelector("#timestampInput");
   if (video && input) {
@@ -356,6 +362,7 @@ window.addEventListener("yt-navigate-finish", () => {
 });
 
 document.addEventListener("fullscreenchange", () => {
+  if (!isContextValid()) return;   // ← add this guard
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -366,9 +373,11 @@ document.addEventListener("fullscreenchange", () => {
   }
 });
 
-chrome.storage.local.get(["isPanelVisible"], (res) => {
-  if (res.isPanelVisible) injectPanel();
-});
+if (isContextValid()) {
+  chrome.storage.local.get(["isPanelVisible"], (res) => {
+    if (res.isPanelVisible) injectPanel();
+  });
+}
 
 chrome.runtime.onMessage.addListener((req) => {
   if (req.action === "togglePanel") {
@@ -385,6 +394,7 @@ chrome.runtime.onMessage.addListener((req) => {
 });
 
 window.addEventListener("resize", () => {
+  if (!isContextValid()) return;   // ← add this guard
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
