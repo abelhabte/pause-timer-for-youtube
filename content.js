@@ -160,49 +160,53 @@ function injectPanel() {
     );
   }
 
+  // --- NEW CODE ---
   chrome.storage.local.get(["panelPositionData"], (res) => {
-    let positionStyles = "";
-    const margin = 10;
-    const approxWidth = 176;
-    const approxHeight = 220;
-    const scrollbarWidth =
-      window.innerWidth - document.documentElement.clientWidth;
-    const effectiveMarginRight = margin + scrollbarWidth;
+    // Wrap in a layout-safe delay to let the YouTube scrollbar settle
+    setTimeout(() => {
+      let positionStyles = "";
+      const margin = 10;
+      const approxWidth = 176;
+      const approxHeight = 220;
+      const scrollbarWidth =
+        window.innerWidth - document.documentElement.clientWidth;
+      const effectiveMarginRight = margin + scrollbarWidth;
 
-    if (res.panelPositionData) {
-      const { xRatio, yRatio, corner } = res.panelPositionData;
-      let targetLeft, targetTop;
+      if (res.panelPositionData) {
+        const { xRatio, yRatio, corner } = res.panelPositionData;
+        let targetLeft, targetTop;
 
-      if (corner === "top-left") {
-        targetTop = margin;
-        targetLeft = margin;
-      } else if (corner === "top-right") {
-        targetTop = margin;
-        targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
-      } else if (corner === "bottom-left") {
-        targetTop = window.innerHeight - approxHeight - margin;
-        targetLeft = margin;
-      } else if (corner === "bottom-right") {
-        targetTop = window.innerHeight - approxHeight - margin;
-        targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+        if (corner === "top-left") {
+          targetTop = margin;
+          targetLeft = margin;
+        } else if (corner === "top-right") {
+          targetTop = margin;
+          targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+        } else if (corner === "bottom-left") {
+          targetTop = window.innerHeight - approxHeight - margin;
+          targetLeft = margin;
+        } else if (corner === "bottom-right") {
+          targetTop = window.innerHeight - approxHeight - margin;
+          targetLeft = window.innerWidth - approxWidth - effectiveMarginRight;
+        } else {
+          targetLeft = window.innerWidth * xRatio;
+          targetTop = window.innerHeight * yRatio;
+          const maxLeft = window.innerWidth - approxWidth - margin;
+          const maxTop = window.innerHeight - approxHeight - margin;
+          targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
+          targetTop = Math.max(margin, Math.min(targetTop, maxTop));
+        }
+
+        positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
       } else {
-        targetLeft = window.innerWidth * xRatio;
-        targetTop = window.innerHeight * yRatio;
-        const maxLeft = window.innerWidth - approxWidth - margin;
-        const maxTop = window.innerHeight - approxHeight - margin;
-        targetLeft = Math.max(margin, Math.min(targetLeft, maxLeft));
-        targetTop = Math.max(margin, Math.min(targetTop, maxTop));
+        const defaultTop = margin;
+        const defaultLeft =
+          window.innerWidth - approxWidth - effectiveMarginRight;
+        positionStyles = `top: ${defaultTop}px; left: ${defaultLeft}px;`;
       }
 
-      positionStyles = `top: ${targetTop}px; left: ${targetLeft}px;`;
-    } else {
-      const defaultTop = margin;
-      const defaultLeft =
-        window.innerWidth - approxWidth - effectiveMarginRight;
-      positionStyles = `top: ${defaultTop}px; left: ${defaultLeft}px;`;
-    }
-
-    panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; opacity: 1; transition: top 0.2s ease, left 0.2s ease, opacity 0.1s ease;`;
+      panel.style.cssText = `position: fixed; ${positionStyles} z-index: 9999; opacity: 1; transition: top 0.2s ease, left 0.2s ease, opacity 0.1s ease;`;
+    }, 50); // A 50ms breather is usually enough to bypass structural layout shifts
   });
 
   document.body.appendChild(panel);
@@ -300,7 +304,7 @@ function makePanelDraggableAndSnappable(panel) {
       corner: targetCorner,
     };
 
-    if (!isContextValid()) return;  // ← add this before the chrome.storage call
+    if (!isContextValid()) return; // ← add this before the chrome.storage call
     chrome.storage.local.set({ panelPositionData: positionData });
   }
 }
@@ -344,9 +348,12 @@ function attachPanelListeners() {
 }
 
 window.addEventListener("yt-navigate-finish", () => {
-  if (!isContextValid()) return;   // ← add this guard
+  if (!isContextValid()) return;
+  
   const video = findVideo();
   const input = document.querySelector("#timestampInput");
+  const panel = document.getElementById(panelId);
+  
   if (video && input) {
     if (!isNaN(video.duration)) {
       input.value = formatTime(video.duration);
@@ -360,10 +367,27 @@ window.addEventListener("yt-navigate-finish", () => {
       );
     }
   }
+
+  // Force re-snap calculation to adjust for any SPA layout shifts or scrollbar toggles
+  if (panel) {
+    chrome.storage.local.get(["panelPositionData"], (res) => {
+      const corner = res.panelPositionData?.corner || "top-right";
+      const margin = 10;
+      const rect = panel.getBoundingClientRect();
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      const effectiveMarginRight = margin + scrollbarWidth;
+
+      if (corner === "top-right") {
+        panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
+      } else if (corner === "bottom-right") {
+        panel.style.left = `${window.innerWidth - rect.width - effectiveMarginRight}px`;
+      }
+    });
+  }
 });
 
 document.addEventListener("fullscreenchange", () => {
-  if (!isContextValid()) return;   // ← add this guard
+  if (!isContextValid()) return; // ← add this guard
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -395,7 +419,7 @@ chrome.runtime.onMessage.addListener((req) => {
 });
 
 window.addEventListener("resize", () => {
-  if (!isContextValid()) return;   // ← add this guard
+  if (!isContextValid()) return; // ← add this guard
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
