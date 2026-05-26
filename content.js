@@ -97,7 +97,6 @@ function injectPanel() {
   panel.id = panelId;
   panel.style.cssText = "position: fixed; opacity: 0; z-index: 9999;";
 
-  // 1. Create the style element programmatically
   const style = document.createElement("style");
   style.textContent = `
     #youtube-pause-extension-panel { position: fixed; opacity: 0; z-index: 9999; }
@@ -116,10 +115,8 @@ function injectPanel() {
     .fullscreen-hidden { display: none !important; }
   `;
 
-  // 2. Append the style element directly to the panel container
   panel.appendChild(style);
 
-  // 3. Set innerHTML without the inline <style> block
   panel.insertAdjacentHTML(
     "beforeend",
     `
@@ -160,14 +157,11 @@ function injectPanel() {
     );
   }
 
-  // --- NEW CODE ---
   chrome.storage.local.get(["panelPositionData"], (res) => {
-    // Wait 50ms for YouTube's structural layout elements to settle
     setTimeout(() => {
       let positionStyles = "";
       const margin = 10;
 
-      // Read the exact rendered dimensions of the panel now that it's in the DOM
       const rect = panel.getBoundingClientRect();
       const panelWidth = rect.width || 176;
       const panelHeight = rect.height || 220;
@@ -187,11 +181,9 @@ function injectPanel() {
           targetTop = margin;
           targetLeft = window.innerWidth - panelWidth - effectiveMarginRight;
         } else if (corner === "bottom-left") {
-          // Use the exact panel height against the stabilized innerHeight
           targetTop = window.innerHeight - panelHeight - margin;
           targetLeft = margin;
         } else if (corner === "bottom-right") {
-          // Use the exact panel height against the stabilized innerHeight
           targetTop = window.innerHeight - panelHeight - margin;
           targetLeft = window.innerWidth - panelWidth - effectiveMarginRight;
         } else {
@@ -213,7 +205,6 @@ function injectPanel() {
         panel.style.left = `${defaultLeft}px`;
       }
 
-      // Reveal the panel smoothly once positioning is locked in
       panel.style.opacity = "1";
     }, 50);
   });
@@ -313,7 +304,7 @@ function makePanelDraggableAndSnappable(panel) {
       corner: targetCorner,
     };
 
-    if (!isContextValid()) return; // ← add this before the chrome.storage call
+    if (!isContextValid()) return;
     chrome.storage.local.set({ panelPositionData: positionData });
   }
 }
@@ -377,7 +368,6 @@ window.addEventListener("yt-navigate-finish", () => {
     }
   }
 
-  // Force re-snap calculation to adjust for any SPA layout shifts or scrollbar toggles
   if (panel) {
     chrome.storage.local.get(["panelPositionData"], (res) => {
       const corner = res.panelPositionData?.corner || "top-right";
@@ -405,7 +395,7 @@ window.addEventListener("yt-navigate-finish", () => {
 });
 
 document.addEventListener("fullscreenchange", () => {
-  if (!isContextValid()) return; // ← add this guard
+  if (!isContextValid()) return;
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
@@ -437,7 +427,7 @@ chrome.runtime.onMessage.addListener((req) => {
 });
 
 window.addEventListener("resize", () => {
-  if (!isContextValid()) return; // ← add this guard
+  if (!isContextValid()) return;
   const panel = document.getElementById(panelId);
   if (!panel) return;
 
