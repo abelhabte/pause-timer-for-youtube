@@ -85,7 +85,7 @@ function showSetFeedback(labelElement, originalText) {
 function injectPanel() {
   if (document.getElementById(panelId)) return;
 
-  // Inline the stylesheet so it's always present regardless of extension reload state
+  // Inline styles so the panel is never unstyled regardless of extension reload state
   const styleId = "youtube-pause-extension-style";
   if (!document.getElementById(styleId)) {
     const style = document.createElement("style");
