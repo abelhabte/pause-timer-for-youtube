@@ -13,7 +13,7 @@ Pause Timer for YouTube is a browser extension designed for efficiently consumin
 
 - Timestamp Precision: Set the video to pause at a specific point (e.g., pause at the 1:28 mark)
 - Percentage-Based Pausing: Automatically calculate the pause point based on a percentage of the video duration (e.g., pause at 50% through)
-- Real-Time Scheduler: Set a specific wall-clock time (e.g., 11:30 PM) for the video to pause, perfect for those who fall asleep watching videos
+- Real-Time Scheduler: Set a specific wall-clock time (e.g., 23:30) for the video to pause, perfect for those who fall asleep watching videos
 - Draggable & Snappable Interface: Easily move the control panel around the screen; automatically snaps neatly to the nearest corner of the browser window
 - Cross-Platform: Full support for both YouTube and YouTube Music
 
